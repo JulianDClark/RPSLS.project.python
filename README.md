@@ -1,1 +1,2 @@
 # RPSLS.project.python
+Rock, Paper, Scissors with a twist inspired by big band theory we created a game adding lizard and spock and created code where the user will be able to interact and play with an AI or a second player 
