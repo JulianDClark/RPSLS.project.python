@@ -1,49 +1,73 @@
+
 import random
-from player import player
 
-class Action(player):
-    Rock = 0
-    Paper = 1
-    Scissors = 2
-    Lizard = 3
-    Spock = 4
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.choice = None
+        
 
-victories = {
-    Action.Scissors: [Action.Lizard, Action.Paper],
-    Action.Paper: [Action.Spock, Action.Rock],
-    Action.Rock: [Action.Lizard, Action.Scissors],
-    Action.Lizard: [Action.Spock, Action.Paper],
-    Action.Spock: [Action.Scissors, Action.Rock]
-}
 
-def get_user_selection():
-    choices = [f"{action.name}[{action.value}]" for action in Action]
-    choices_str = ", ".join(choices)
-    selection = int(input(f"Enter a choice ({choices_str}): "))
-    action = Action(selection)
-    return action
+    def choose(self):
+        pass
 
-def get_computer_selection():
-    selection = random.randint(0, len(Action) - 1)
-    action = Action(selection)
-    return action
+class HumanPlayer(Player):
+    def choose(self):
+        while True:
+            self.choice = input("Enter your choice: ")
+            if self.choice.capitalize() in choices:
+                break
+            print("Invalid input, please try again.")
 
-def determine_winner(user_action, computer_action):
-    defeats = victories[user_action]
-    if user_action == computer_action:
-        print(f"Both players selected {user_action.name}. It's a tie!")
-    elif computer_action in defeats:
-        print(f"{user_action.name} beats {computer_action.name}! You win!")
-    else:
-        print(f"{computer_action.name} beats {user_action.name}! You lose.")
+class ComputerPlayer(Player):
+    def choose(self):
+        self.choice = random.choice(choices)
 
+class RPSLS:
+    def __init__(self):
+        self.human = HumanPlayer("You")
+        self.computer = ComputerPlayer("Computer")
+    def play(self):
+        print("Rock, Paper, Scissors, Lizard, Spock!")
+        self.human.choose()
+        self.computer.choose()
+        print(f"{self.human.name} chose {self.human.choice}")
+        print(f"{self.computer.name} chose {self.computer.choice}")
+        print(self.who_wins())
+
+    def who_wins(self):
+        if self.human.choice == self.computer.choice:
+            return "It's a tie!"
+        elif (self.human.choice == "Rock" and self.computer.choice == "Scissors") or \
+             (self.human.choice == "Scissors" and self.computer.choice == "Paper") or \
+             (self.human.choice == "Paper" and self.computer.choice == "Rock") or \
+             (self.human.choice == "Rock" and self.computer.choice == "Lizard") or \
+             (self.human.choice == "Lizard" and self.computer.choice == "Spock") or \
+             (self.human.choice == "Spock" and self.computer.choice == "Scissors") or \
+             (self.human.choice == "Scissors" and self.computer.choice == "Lizard") or \
+             (self.human.choice == "Lizard" and self.computer.choice == "Paper") or \
+             (self.human.choice == "Paper" and self.computer.choice == "Spock") or \
+             (self.human.choice == "Spock" and self.computer.choice == "Rock"):
+            return f"{self.human.name} wins!"
+        else:
+            return f"{self.computer.name} wins!"
+
+choices = ["Rock", "Paper", "Scissors", "Lizard", "Spock"]
+
+# Main game loop
 while True:
-    try:
-        user_action = get_user_selection()
-    except ValueError as e:
-        range_str = f"[0, {len(Action) - 1}]"
-        print(f"Invalid selection. Enter a value in range {range_str}")
-        continue
+    game = RPSLS()
+    game.play()
 
-    computer_action = get_computer_selection()
-    determine_winner(user_action, computer_action)
+    play_again = input("Play again? (y/n): ")
+    if play_again.lower() == "n":
+      break
+
+
+
+
+
+
+
+
+
